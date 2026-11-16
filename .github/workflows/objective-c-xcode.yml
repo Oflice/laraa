@@ -2,7 +2,7 @@ name: Build iOS Static Library
 on: [push, workflow_dispatch]
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       - name: Build Static Library
@@ -13,6 +13,9 @@ jobs:
             -configuration Release \
             -derivedDataPath ./build \
             MACH_O_TYPE=staticlib \
+            EXECUTABLE_EXTENSION=a \
+            GCC_ENABLE_SYMBOL_SEPARATION=NO \
+            PACKAGE_TYPE=com.apple.package-type.static-library \
             CODE_SIGNING_ALLOWED=NO
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
