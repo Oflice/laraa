@@ -1,0 +1,21 @@
+name: Build iOS Static Library
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Static Library
+        run: |
+          xcodebuild -project lara.xcodeproj \
+            -scheme lara \
+            -sdk iphoneos \
+            -configuration Release \
+            -derivedDataPath ./build \
+            MACH_O_TYPE=staticlib \
+            CODE_SIGNING_ALLOWED=NO
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: liblara
+          path: ./build/Build/Products/Release-iphoneos/
